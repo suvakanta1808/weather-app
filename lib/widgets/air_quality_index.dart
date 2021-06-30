@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/aqi_details_page.dart';
+import 'package:weather_app/pages/aqi_details_page.dart';
 
 class AirQualityIndex extends StatelessWidget {
   final String aqi;

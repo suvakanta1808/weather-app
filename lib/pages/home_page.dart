@@ -2,11 +2,11 @@ import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:weather_app/air_quality_index.dart';
-import 'package:weather_app/weather_details.dart';
-import 'package:weather_app/weather_details_item.dart';
-import 'package:weather_app/weather_forecast_panel.dart';
-import 'package:weather_app/weather_item.dart';
+import 'package:weather_app/widgets/air_quality_index.dart';
+import 'package:weather_app/widgets/weather_details.dart';
+import 'package:weather_app/widgets/weather_details_item.dart';
+import 'package:weather_app/widgets/weather_forecast_panel.dart';
+import 'package:weather_app/widgets/weather_item.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {

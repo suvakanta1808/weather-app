@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/weather_forecast_item.dart';
+import 'package:weather_app/widgets/weather_forecast_item.dart';
 
 class WeatherForecastPanel extends StatelessWidget {
   final List<List<String>> forecastData;

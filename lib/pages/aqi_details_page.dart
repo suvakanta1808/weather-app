@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/air_component.dart';
+import 'package:weather_app/widgets/air_component.dart';
 
 class AqiDetailsPage extends StatelessWidget {
   static const routeName = 'aqi-detail';

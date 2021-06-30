@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/aqi_details_page.dart';
-import 'package:weather_app/home_page.dart';
+import 'package:weather_app/pages/aqi_details_page.dart';
+import 'package:weather_app/pages/home_page.dart';
 
 void main() {
   runApp(MyApp());
