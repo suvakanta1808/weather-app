@@ -2,12 +2,17 @@ import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:weather_app/pages/five_days_forecast_page.dart';
+import 'package:weather_app/pages/search_location_page.dart';
 import 'package:weather_app/widgets/air_quality_index.dart';
+import 'package:weather_app/widgets/hourly_forecast_panel.dart';
+import 'package:weather_app/widgets/splash_item.dart';
+import 'package:weather_app/widgets/sunrise_sunset_widget.dart';
 import 'package:weather_app/widgets/weather_details.dart';
-import 'package:weather_app/widgets/weather_details_item.dart';
 import 'package:weather_app/widgets/weather_forecast_panel.dart';
-import 'package:weather_app/widgets/weather_item.dart';
 import 'package:http/http.dart' as http;
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:weather_icons/weather_icons.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,26 +20,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<List<String>> _forecastData = [
-    ['Today.Clear', '34 / 27 oC'],
-    ['Tomorrow.Clear', '35 / 26 oC'],
-    ['Wednessday.Clear', '34 / 24 oC'],
-  ];
+  //API_KEY for data fetching
+  static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
+
+  //data initialized with null
   Map<String, dynamic> _details = {};
   Map<String, dynamic> aqiData = {};
+  Map<String, dynamic> hourlyForecastData = {};
+  Map<String, dynamic> dailyForecastData = {};
+  DateTime srt = DateTime.now();
+  DateTime sst = DateTime.now();
   String _aqi = '';
-
-  static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
 
   @override
   void initState() {
-    fetchDetails();
+    _getUserCurrentLocationAndWeatherInfo();
     super.initState();
   }
 
-  Future<void> fetchDetails() async {
-    final loc = await Location().getLocation();
+  //Fecth the current location of user and pass it to the fetchDetails method to retrive current weather conditions
+  Future<void> _getUserCurrentLocationAndWeatherInfo() async {
+    final locData = await Location().getLocation();
+    await fetchDetails(locData);
+  }
 
+  //fetch weather conditions data of given cordinates
+  Future<void> fetchDetails(LocationData loc) async {
     final url = Uri.parse(
         'http://api.openweathermap.org/data/2.5/weather?lat=${loc.latitude}&lon=${loc.longitude}&units=metric&appid=$API_KEY');
     final wet = await http.get(url);
@@ -46,12 +57,36 @@ class _HomePageState extends State<HomePage> {
     final aqi = await http.get(aqiUrl);
     final aqiDoc = convert.jsonDecode(aqi.body) as Map<String, dynamic>;
 
+    final hfUrl = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=daily&units=metric&appid=$API_KEY');
+
+    final hfrData = await http.get(hfUrl);
+    final hForecastDocs =
+        convert.jsonDecode(hfrData.body) as Map<String, dynamic>;
+
+    final dfUrl = Uri.parse(
+        'https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=hourly&units=metric&appid=$API_KEY');
+
+    final dfrData = await http.get(dfUrl);
+    final dForecastDocs =
+        convert.jsonDecode(dfrData.body) as Map<String, dynamic>;
+
     print(wetData);
 
     setState(() {
       _details = wetData;
       aqiData = aqiDoc;
+      hourlyForecastData = hForecastDocs;
+      dailyForecastData = dForecastDocs;
       _aqi = aqiDoc['list'][0]['main']['aqi'].toString();
+      srt = new DateTime.fromMillisecondsSinceEpoch(
+        hourlyForecastData['current']['sunrise'] * 1000,
+        isUtc: false,
+      );
+      sst = new DateTime.fromMillisecondsSinceEpoch(
+        hourlyForecastData['current']['sunset'] * 1000,
+        isUtc: false,
+      );
     });
   }
 
@@ -59,10 +94,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _details.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? SplashItem()
           : RefreshIndicator(
               color: Colors.red,
-              onRefresh: fetchDetails,
+              onRefresh: _getUserCurrentLocationAndWeatherInfo,
               semanticsLabel: 'Updating...',
               strokeWidth: 2.0,
               child: Stack(
@@ -77,24 +112,24 @@ class _HomePageState extends State<HomePage> {
                       width: double.infinity,
                       child: Column(
                         children: <Widget>[
-                          SizedBox(
-                            height: 10,
-                          ),
                           Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 IconButton(
                                   icon: Icon(
-                                    Icons.add,
+                                    Icons.search,
                                     size: 30,
                                     color: Colors.white,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                        SearchLocationPage.routeName);
+                                  },
                                 ),
                                 Text(
                                   _details['name'],
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 22),
                                 ),
                                 IconButton(
                                   onPressed: () {},
@@ -126,8 +161,20 @@ class _HomePageState extends State<HomePage> {
                                           .toStringAsFixed(0),
                                       style: TextStyle(fontSize: 110),
                                     ),
-                                    Text('o'),
-                                    Text('C'),
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 65),
+                                      child: Text(
+                                        'o',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 62),
+                                      child: Text(
+                                        'C',
+                                        style: TextStyle(fontSize: 17),
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(
@@ -157,74 +204,50 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          WeatherForecastPanel(_forecastData),
-                          SizedBox(
-                            height: 10,
+                          WeatherForecastPanel(
+                            dailyForecastData,
                           ),
+                          // BoxedIcon(
+                          //   WeatherIcons.fromString('wi-hail',
+                          //       fallback: WeatherIcons.na),
+                          // ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
+                            children: [
                               RaisedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                    FiveDaysForecastPage.routeName,
+                                    arguments: dailyForecastData,
+                                  );
+                                },
                                 child: Text(
-                                  '5-day forecast',
+                                  '7-day forecast',
                                   style: TextStyle(
-                                    fontSize: 18,
                                     color: Colors.white,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 25,
+                            height: 30,
                           ),
-                          Card(
-                            elevation: 5,
-                            color: Colors.blue.shade800,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.only(top: 25),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  Column(
-                                    children: [
-                                      WeatherDetailsItem(
-                                        title: 'Sea Level',
-                                        data: '1262 km',
-                                      ),
-                                      WeatherDetailsItem(
-                                        title: 'Ground Level',
-                                        data: '1067 km',
-                                      ),
-                                    ],
-                                  ),
-                                  WeatherItem(),
-                                ],
-                              ),
-                            ),
-                          ),
+                          HourlyForecastPanel(hourlyForecastData),
                           SizedBox(
-                            height: 25,
+                            height: 30,
                           ),
-                          // Container(
-                          //   height: 150,
-                          //   child: ListView.builder(
-                          //     scrollDirection: Axis.horizontal,
-                          //     itemBuilder: (ctx, i) => WeatherItem(),
-                          //     itemCount: 23,
-                          //   ),
-                          // ),
+
+                          // SunriseSunsetWidget(),
                           WeatherDetails(
+                            sunrise: srt.toString().substring(11, 16),
+                            sunset: sst.toString().substring(11, 16),
                             temperature: (_details['main']['feels_like'])
                                 .toStringAsFixed(0),
                             humidity: (_details['main']['humidity'])
                                 .toStringAsFixed(0),
-                            chanceOfRain: '40',
+                            chanceOfRain: _details['clouds']['all'].toString(),
                             pressure: (_details['main']['pressure'])
                                 .toStringAsFixed(0),
                             speed: _details['wind']['speed'].toString(),

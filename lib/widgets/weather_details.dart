@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/widgets/sunrise_sunset_widget.dart';
 import 'package:weather_app/widgets/weather_details_item.dart';
 
 class WeatherDetails extends StatelessWidget {
@@ -8,6 +9,8 @@ class WeatherDetails extends StatelessWidget {
   final String pressure;
   final String speed;
   final String uvIndex;
+  final String sunrise;
+  final String sunset;
 
   WeatherDetails({
     required this.temperature,
@@ -16,6 +19,8 @@ class WeatherDetails extends StatelessWidget {
     required this.pressure,
     required this.speed,
     required this.uvIndex,
+    required this.sunrise,
+    required this.sunset,
   });
 
   @override
@@ -28,22 +33,29 @@ class WeatherDetails extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            child: Text('PlaceHolder_Image'),
-            height: 100,
-            width: double.infinity,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Text('Sunrise 05:09'),
-              Text('Sunset 18:30'),
-            ],
-          ),
           SizedBox(
             height: 30,
           ),
+          SunriseSunsetWidget(
+            srTime: sunrise,
+            ssTime: sunset,
+          ),
+          // SizedBox(
+          //   height: 30,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   children: <Widget>[
+          //     WeatherDetailsItem(
+          //       title: 'Sunrise',
+          //       data: '$sunrise',
+          //     ),
+          //     WeatherDetailsItem(
+          //       title: 'Sunset',
+          //       data: '$sunset',
+          //     ),
+          //   ],
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[

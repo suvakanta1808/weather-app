@@ -8,6 +8,11 @@ class AqiDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final aqiData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    var d = new DateTime.fromMillisecondsSinceEpoch(
+      aqiData['list'][0]['dt'] * 1000,
+      isUtc: true,
+    );
+    var date = d.toString().substring(11, 16);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +40,7 @@ class AqiDetailsPage extends StatelessWidget {
               height: 5,
             ),
             Text(
-              'Khordha Published at 08:30 am',
+              'Details Published at $date',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(
@@ -48,14 +53,18 @@ class AqiDetailsPage extends StatelessWidget {
                   aqiData['list'][0]['main']['aqi'].toString(),
                   style: TextStyle(
                     fontSize: 37,
-                    color: Colors.greenAccent.shade400,
+                    color: aqiData['list'][0]['main']['aqi'] < 100
+                        ? Colors.greenAccent.shade400
+                        : Colors.deepOrangeAccent,
                   ),
                 ),
                 SizedBox(
                   width: 20,
                 ),
                 Text(
-                  'Good',
+                  aqiData['list'][0]['main']['aqi'] < 100
+                      ? 'Good'
+                      : 'Very unhealthy.Stay safe',
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.greenAccent.shade400,

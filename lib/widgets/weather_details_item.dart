@@ -28,7 +28,7 @@ class WeatherDetailsItem extends StatelessWidget {
               data,
               style: TextStyle(fontSize: 21),
             ),
-          )
+          ),
         ],
       ),
     );

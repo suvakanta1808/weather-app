@@ -1,27 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/helpers/weather_helper.dart';
 import 'package:weather_app/widgets/weather_forecast_item.dart';
 
 class WeatherForecastPanel extends StatelessWidget {
-  final List<List<String>> forecastData;
+  final Map<String, dynamic> forecastData;
 
   WeatherForecastPanel(this.forecastData);
 
+  var weatherIconHandler = WeatherHelper().selectWeatherIcon;
+  var dayNameHandler = WeatherHelper().weekDay;
+
   @override
   Widget build(BuildContext context) {
+    var dayAfter = dayNameHandler((DateTime.now().weekday + 2) % 7);
+
     return Container(
       child: Column(
         children: <Widget>[
           WeatherForecastItem(
-            weather: forecastData[0][0],
-            temp: forecastData[0][1],
+            weather: 'Today.${forecastData['daily'][0]['weather'][0]['main']}',
+            maxTemp: forecastData['daily'][0]['temp']['max']
+                .toString()
+                .substring(0, 2),
+            minTemp: forecastData['daily'][0]['temp']['min']
+                .toString()
+                .substring(0, 2),
+            weatherIcon: weatherIconHandler(
+                forecastData['daily'][0]['weather'][0]['main']),
           ),
           WeatherForecastItem(
-            weather: forecastData[1][0],
-            temp: forecastData[1][1],
+            weather:
+                'Tomorrow.${forecastData['daily'][1]['weather'][0]['main']}',
+            maxTemp: forecastData['daily'][1]['temp']['max']
+                .toString()
+                .substring(0, 2),
+            minTemp: forecastData['daily'][1]['temp']['min']
+                .toString()
+                .substring(0, 2),
+            weatherIcon: weatherIconHandler(
+                forecastData['daily'][1]['weather'][0]['main']),
           ),
           WeatherForecastItem(
-            weather: forecastData[2][0],
-            temp: forecastData[2][1],
+            weather:
+                '$dayAfter.${forecastData['daily'][2]['weather'][0]['main']}',
+            maxTemp: forecastData['daily'][2]['temp']['max']
+                .toString()
+                .substring(0, 2),
+            minTemp: forecastData['daily'][2]['temp']['min']
+                .toString()
+                .substring(0, 2),
+            weatherIcon: weatherIconHandler(
+                forecastData['daily'][2]['weather'][0]['main']),
           ),
         ],
       ),

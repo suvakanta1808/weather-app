@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:weather_app/pages/aqi_details_page.dart';
+import 'package:weather_app/pages/city_weather_details_page.dart';
+import 'package:weather_app/pages/five_days_forecast_page.dart';
 import 'package:weather_app/pages/home_page.dart';
+import 'package:weather_app/pages/search_location_page.dart';
 
 void main() {
   runApp(MyApp());
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 }
 
 class MyApp extends StatelessWidget {
@@ -33,6 +38,9 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       routes: {
         AqiDetailsPage.routeName: (ctx) => AqiDetailsPage(),
+        SearchLocationPage.routeName: (ctx) => SearchLocationPage(),
+        CityWeatherDetailsPage.routeName: (ctx) => CityWeatherDetailsPage(),
+        FiveDaysForecastPage.routeName: (ctx) => FiveDaysForecastPage(),
       },
     );
   }
