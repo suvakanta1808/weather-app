@@ -50,4 +50,32 @@ class WeatherHelper {
       return 'Sunday';
     }
   }
+
+  String airQuality(int n) {
+    if (n == 1) {
+      return 'Good';
+    } else if (n == 2) {
+      return 'Fair';
+    } else if (n == 3) {
+      return 'Moderate';
+    } else if (n == 4) {
+      return 'Poor';
+    } else {
+      return 'Very Poor';
+    }
+  }
+
+  String airQualityMessage(int n) {
+    if (n == 1) {
+      return 'Air quality is good.A perfect day for a walk!';
+    } else if (n == 2) {
+      return 'Air quality is fair.';
+    } else if (n == 3) {
+      return 'Air quality is moderate.Stay safe.';
+    } else if (n == 4) {
+      return 'Air quality is poor.Use mask when oustside';
+    } else {
+      return 'Air quality is Very Poor.Stay home & Stay safe.';
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/helpers/weather_helper.dart';
 import 'package:weather_app/widgets/air_component.dart';
 
 class AqiDetailsPage extends StatelessWidget {
@@ -8,6 +9,7 @@ class AqiDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final aqiData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
     var d = new DateTime.fromMillisecondsSinceEpoch(
       aqiData['list'][0]['dt'] * 1000,
       isUtc: true,
@@ -53,7 +55,7 @@ class AqiDetailsPage extends StatelessWidget {
                   aqiData['list'][0]['main']['aqi'].toString(),
                   style: TextStyle(
                     fontSize: 37,
-                    color: aqiData['list'][0]['main']['aqi'] < 100
+                    color: aqiData['list'][0]['main']['aqi'] <= 3
                         ? Colors.greenAccent.shade400
                         : Colors.deepOrangeAccent,
                   ),
@@ -62,12 +64,15 @@ class AqiDetailsPage extends StatelessWidget {
                   width: 20,
                 ),
                 Text(
-                  aqiData['list'][0]['main']['aqi'] < 100
-                      ? 'Good'
-                      : 'Very unhealthy.Stay safe',
+                  WeatherHelper().airQuality(aqiData['list'][0]['main']['aqi']),
+                  // aqiData['list'][0]['main']['aqi'] < 100
+                  //     ? 'Good'
+                  //     : 'Very unhealthy.Stay safe',
                   style: TextStyle(
                     fontSize: 17,
-                    color: Colors.greenAccent.shade400,
+                    color: aqiData['list'][0]['main']['aqi'] <= 3
+                        ? Colors.greenAccent.shade400
+                        : Colors.deepOrangeAccent,
                   ),
                 ),
               ],
@@ -76,7 +81,8 @@ class AqiDetailsPage extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'Air quality is good.A perfect day for a walk!',
+              WeatherHelper()
+                  .airQualityMessage(aqiData['list'][0]['main']['aqi']),
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(
@@ -88,27 +94,27 @@ class AqiDetailsPage extends StatelessWidget {
                 children: <Widget>[
                   AirComponent(
                     label: 'PM2.5',
-                    data: '${aqiData['list'][0]['components']['pm2_5']}',
+                    data: aqiData['list'][0]['components']['pm2_5'],
                   ),
                   AirComponent(
                     label: 'PM10',
-                    data: '${aqiData['list'][0]['components']['pm10']}',
+                    data: aqiData['list'][0]['components']['pm10'],
                   ),
                   AirComponent(
                     label: 'SO2',
-                    data: '${aqiData['list'][0]['components']['so2']}',
+                    data: aqiData['list'][0]['components']['so2'],
                   ),
                   AirComponent(
                     label: 'NO2',
-                    data: '${aqiData['list'][0]['components']['no2']}',
+                    data: aqiData['list'][0]['components']['no2'],
                   ),
                   AirComponent(
                     label: 'O3',
-                    data: '${aqiData['list'][0]['components']['o3']}',
+                    data: aqiData['list'][0]['components']['o3'],
                   ),
                   AirComponent(
                     label: 'CO',
-                    data: '${aqiData['list'][0]['components']['co']}',
+                    data: aqiData['list'][0]['components']['co'],
                   ),
                 ],
               ),

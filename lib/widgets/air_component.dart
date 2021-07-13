@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AirComponent extends StatelessWidget {
   final String label;
-  final String data;
+  final double data;
 
   AirComponent({
     required this.label,
@@ -16,15 +16,14 @@ class AirComponent extends StatelessWidget {
       height: 42,
       width: 40,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           FittedBox(
             child: Text(
-              data,
-              style: TextStyle(
-                fontSize: 17,
-                color: Colors.greenAccent.shade400,
-              ),
+              data.toString(),
+              style:
+                  TextStyle(fontSize: 17, color: Colors.greenAccent.shade400),
             ),
           ),
           SizedBox(
