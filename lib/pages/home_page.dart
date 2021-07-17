@@ -22,7 +22,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //API_KEY for data fetching
   var API_KEY = env['WEATHER_API_KEY'];
-  //static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
 
   //data initialized with null
   Map<String, dynamic> _details = {};

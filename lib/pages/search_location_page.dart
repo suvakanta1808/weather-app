@@ -19,8 +19,6 @@ class SearchLocationPage extends StatefulWidget {
 class _SearchLocationPageState extends State<SearchLocationPage> {
   var API_KEY = env['WEATHER_API_KEY'];
 
-  // static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
-
   GlobalKey<AutoCompleteTextFieldState<String>> _key = new GlobalKey();
   TextEditingController _controller = TextEditingController();
   Map<String, dynamic> weatherData = {};
