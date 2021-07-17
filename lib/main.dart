@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+
 import 'package:weather_app/pages/aqi_details_page.dart';
 import 'package:weather_app/pages/city_weather_details_page.dart';
 import 'package:weather_app/pages/five_days_forecast_page.dart';
 import 'package:weather_app/pages/home_page.dart';
 import 'package:weather_app/pages/search_location_page.dart';
 
-void main() {
+Future main() async {
+  await DotEnv.load(fileName: ".env");
   runApp(MyApp());
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 }

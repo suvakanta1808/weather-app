@@ -2,17 +2,17 @@ import 'dart:convert' as convert;
 
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/pages/five_days_forecast_page.dart';
 import 'package:weather_app/pages/search_location_page.dart';
 import 'package:weather_app/widgets/air_quality_index.dart';
 import 'package:weather_app/widgets/hourly_forecast_panel.dart';
 import 'package:weather_app/widgets/splash_item.dart';
-import 'package:weather_app/widgets/sunrise_sunset_widget.dart';
 import 'package:weather_app/widgets/weather_details.dart';
 import 'package:weather_app/widgets/weather_forecast_panel.dart';
 import 'package:http/http.dart' as http;
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:weather_icons/weather_icons.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   //API_KEY for data fetching
-  static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
+  var API_KEY = env['WEATHER_API_KEY'];
+  //static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
 
   //data initialized with null
   Map<String, dynamic> _details = {};
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
 
   //fetch weather conditions data of given cordinates
   Future<void> fetchDetails(LocationData loc) async {
+    print(API_KEY);
     final url = Uri.parse(
         'http://api.openweathermap.org/data/2.5/weather?lat=${loc.latitude}&lon=${loc.longitude}&units=metric&appid=$API_KEY');
     final wet = await http.get(url);

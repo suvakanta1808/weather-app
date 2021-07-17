@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 // ignore: import_of_legacy_library_into_null_safe
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:weather_app/models/city_names.dart';
 import 'package:weather_app/pages/city_weather_details_page.dart';
@@ -15,14 +17,19 @@ class SearchLocationPage extends StatefulWidget {
 }
 
 class _SearchLocationPageState extends State<SearchLocationPage> {
+  var API_KEY = env['WEATHER_API_KEY'];
+
+  // static const API_KEY = '4f03aed2d15f16b6a0023fc5d2a7ad57';
+
   GlobalKey<AutoCompleteTextFieldState<String>> _key = new GlobalKey();
   TextEditingController _controller = TextEditingController();
   Map<String, dynamic> weatherData = {};
   String placeToBeSearched = '';
 
   Future<void> fetchWeatherDetailsForEnteredCity(String cityName) async {
+    print(env['WEATHER_API_KEY']);
     final url = Uri.parse(
-        'http://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=4f03aed2d15f16b6a0023fc5d2a7ad57');
+        'http://api.openweathermap.org/data/2.5/weather?q=$cityName&units=metric&appid=$API_KEY');
     final response = await http.get(url);
     final wData = json.decode(response.body) as Map<String, dynamic>;
 

@@ -28,6 +28,7 @@ dependencies:
   autocomplete_textfield: ^1.7.3
   weather_icons: ^2.0.2
   percent_indicator: ^3.0.1
+  flutter_dotenv: ^3.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,6 +57,7 @@ flutter:
     - assets/images/some_clouds.png
     - assets/images/sunny.png
     - assets/images/thunderstorm.png
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
