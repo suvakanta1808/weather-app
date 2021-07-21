@@ -1,6 +1,8 @@
-# weather_app
+# Weather_app
 
-A new Flutter project.
+A simple weather app.
+  - provides current weather conditions of user's location and other place also.
+  - provides weather forecast of the week and air quality details of current location.
 
 ## Getting Started
 
