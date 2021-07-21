@@ -28,10 +28,10 @@ class CityWeatherDetailsPage extends StatelessWidget {
       );
 
       return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue.shade700,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.blue.shade700,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
@@ -54,8 +54,8 @@ class CityWeatherDetailsPage extends StatelessWidget {
             : SingleChildScrollView(
                 child: Card(
                   margin: EdgeInsets.all(25),
-                  elevation: 5,
-                  color: Colors.black,
+                  elevation: 0,
+                  color: Colors.blue.shade700,
                   child: Column(
                     children: [
                       SizedBox(
