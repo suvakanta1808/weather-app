@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:weather_app/models/city_names.dart';
 import 'package:weather_app/pages/city_weather_details_page.dart';
 
 class SearchLocationPage extends StatefulWidget {
@@ -64,63 +63,42 @@ class _SearchLocationPageState extends State<SearchLocationPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          AutoCompleteTextField<String>(
-            key: _key,
-            clearOnSubmit: false,
-            controller: _controller,
-            suggestions: CityNames().cities,
-            style: TextStyle(color: Colors.white, fontSize: 16.0),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.blue.shade200,
-              labelText: 'Enter City Name',
-              labelStyle: TextStyle(
-                color: Colors.black,
-              ),
-              contentPadding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 40.0),
-              // hintText: "Search Name",
-              hintStyle: TextStyle(color: Colors.white),
-            ),
-            itemFilter: (item, query) {
-              return item.toLowerCase().startsWith(query.toLowerCase());
-            },
-            itemSorter: (a, b) {
-              return a.compareTo(b);
-            },
-            itemSubmitted: (item) {
-              setState(() {
-                _controller.text = item;
-                placeToBeSearched = item;
-              });
-              print(placeToBeSearched);
-            },
-            itemBuilder: (context, item) {
-              // ui for the autocomplete row
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _controller.text = item;
-                  });
-                },
-                child: Container(
-                  color: Colors.grey.shade300,
-                  height: 50,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Divider(),
-                    ],
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextField(
+                  controller: _controller,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: 'Enter city name e.g Mumbai,Delhi,etc.',
+                    labelStyle: TextStyle(color: Colors.white),
                   ),
                 ),
-              );
-            },
+              ),
+              SizedBox(height: 20),
+              Card(
+                elevation: 5,
+                color: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Enter the name of any city in the world and hit the search button.Wait for result.',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           RaisedButton(
             color: Colors.grey.shade300,
